@@ -87,24 +87,25 @@ console.log(request);
 
 //how to consume a promise
 
-
-
-const getCountryData = function (country) {
+const getCountryData = function (country, errorMsg = `Something went wrong`) {
     fetch(`https://restcountries.com/v2/name/${country}`)
         .then(response => {
             if (!response.ok)
-                throw new Error(`Country not found ${response.status}`);
+                throw new Error(`${errorMsg} (${response.status})`);
             return response.json();
         })
         .then(data => {
             renderCountry(data[1]);
             const neighbour = data[1].borders[0];
-            if (!neighbour) return;
-
+            if (!neighbour) throw new Error('No neighbour found!');
             //country 2
             return fetch(`https://restcountries.com/v2/alpha/${neighbour}`)
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok)
+                throw new Error(`Country not found ${response.status}`);
+            return response.json();
+        })
         .then(data => renderCountry(data, 'neighbour'))
         .catch(err => {
             console.log(`${err} boom`)
