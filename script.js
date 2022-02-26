@@ -91,7 +91,11 @@ console.log(request);
 
 const getCountryData = function (country) {
     fetch(`https://restcountries.com/v2/name/${country}`)
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok)
+                throw new Error(`Country not found ${response.status}`);
+            return response.json();
+        })
         .then(data => {
             renderCountry(data[1]);
             const neighbour = data[1].borders[0];
