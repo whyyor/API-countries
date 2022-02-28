@@ -141,14 +141,3 @@ const whereAmI = function (lat, lng) {
         .catch(err => console.error(`${err.message} 💥`));
 };
 whereAmI(52.508, 13.381);
-
-const lotteryPromise = new Promise(function (resolve, reject) {
-    //This new promise executes as soon as it's created
-    //It take these two params
-    if (Math.random() >= 0.5) {
-        resolve('You win money');
-        //the param passed in resolve is message
-    } else {
-        reject(new Error('You lost your money lmao loser!'));
-    }
-});
