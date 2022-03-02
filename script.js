@@ -120,8 +120,14 @@ btn.addEventListener('click', function () {
     getCountryData('India');
 })
 
-const whereAmI = function (lat, lng) {
-    fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`)
+const whereAmI = function () {
+    getPostion()
+        .then(pos => {
+            const {
+                lat = latitude, lng = longitude
+            } = pos.coords;
+            return fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`)
+        })
         .then(res => {
             if (!res.ok) throw new Error(`Problem with geocoding ${res.status}`);
             return res.json();
@@ -140,4 +146,19 @@ const whereAmI = function (lat, lng) {
         .then(data => renderCountry(data[0]))
         .catch(err => console.error(`${err.message} 💥`));
 };
-whereAmI(52.508, 13.381);
+// whereAmI(52.508, 13.381);
+
+
+
+navigator.geolocation.getCurrentPosition(position => console.log(position), err => console.log(err));
+
+const getPostion = function () {
+    return new Promise(function (resolve, reject) {
+        navigator.geolocationgetCurrentPosition(resolve, reject);
+    });
+};
+
+getPostion().then(pos => console.log(pos));
+
+
+btn.addEventListener('click', whereAmI());
