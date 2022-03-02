@@ -124,7 +124,8 @@ const whereAmI = function () {
     getPostion()
         .then(pos => {
             const {
-                lat = latitude, lng = longitude
+                latitude: lat,
+                longitude: lng
             } = pos.coords;
             return fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`)
         })
